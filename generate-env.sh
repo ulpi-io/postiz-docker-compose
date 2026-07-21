@@ -12,34 +12,32 @@ postgres_password="$(openssl rand -hex 32)"
 redis_password="$(openssl rand -hex 32)"
 temporal_postgres_password="$(openssl rand -hex 32)"
 
-cat <<EOF
-POSTIZ_URL=https://post.con.fyi
+script_directory="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+template="${script_directory}/.env.example"
 
-JWT_SECRET=${jwt_secret}
-POSTIZ_POSTGRES_PASSWORD=${postgres_password}
-POSTIZ_REDIS_PASSWORD=${redis_password}
-TEMPORAL_POSTGRES_PASSWORD=${temporal_postgres_password}
+if [[ ! -f "${template}" ]]; then
+  echo "Missing environment template: ${template}" >&2
+  exit 1
+fi
 
-POSTIZ_POSTGRES_USER=postiz-user
-POSTIZ_POSTGRES_DB=postiz
-
-DISABLE_REGISTRATION=false
-IS_GENERAL=true
-RUN_CRON=true
-
-STORAGE_PROVIDER=local
-UPLOAD_DIRECTORY=/uploads
-NEXT_PUBLIC_UPLOAD_DIRECTORY=/uploads
-
-OPENAI_API_KEY=
-X_API_KEY=
-X_API_SECRET=
-LINKEDIN_CLIENT_ID=
-LINKEDIN_CLIENT_SECRET=
-FACEBOOK_APP_ID=
-FACEBOOK_APP_SECRET=
-YOUTUBE_CLIENT_ID=
-YOUTUBE_CLIENT_SECRET=
-TIKTOK_CLIENT_ID=
-TIKTOK_CLIENT_SECRET=
-EOF
+while IFS= read -r line || [[ -n "${line}" ]]; do
+  case "${line}" in
+    JWT_SECRET=replace-me)
+      printf 'JWT_SECRET=%s\n' "${jwt_secret}"
+      ;;
+    POSTIZ_POSTGRES_PASSWORD=replace-me)
+      printf 'POSTIZ_POSTGRES_PASSWORD=%s\n' "${postgres_password}"
+      ;;
+    POSTIZ_REDIS_PASSWORD=replace-me)
+      printf 'POSTIZ_REDIS_PASSWORD=%s\n' "${redis_password}"
+      ;;
+    TEMPORAL_POSTGRES_PASSWORD=replace-me)
+      printf 'TEMPORAL_POSTGRES_PASSWORD=%s\n' "${temporal_postgres_password}"
+      ;;
+    \#*)
+      ;;
+    *)
+      printf '%s\n' "${line}"
+      ;;
+  esac
+done < "${template}"
