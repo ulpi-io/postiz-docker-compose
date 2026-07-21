@@ -1,7 +1,7 @@
 x-postiz-environment: &postiz-environment
-  MAIN_URL: "${POSTIZ_URL:-https://postiz.con.fyi}"
-  FRONTEND_URL: "${POSTIZ_URL:-https://postiz.con.fyi}"
-  NEXT_PUBLIC_BACKEND_URL: "${POSTIZ_URL:-https://postiz.con.fyi}/api"
+  MAIN_URL: "${POSTIZ_URL:-https://post.con.fyi}"
+  FRONTEND_URL: "${POSTIZ_URL:-https://post.con.fyi}"
+  NEXT_PUBLIC_BACKEND_URL: "${POSTIZ_URL:-https://post.con.fyi}/api"
   JWT_SECRET: "${JWT_SECRET:?JWT_SECRET is required}"
   DATABASE_URL: "postgresql://${POSTIZ_POSTGRES_USER:-postiz-user}:${POSTIZ_POSTGRES_PASSWORD:?POSTIZ_POSTGRES_PASSWORD is required}@postiz-postgres:5432/${POSTIZ_POSTGRES_DB:-postiz}"
   REDIS_URL: "redis://:${POSTIZ_REDIS_PASSWORD:?POSTIZ_REDIS_PASSWORD is required}@postiz-redis:6379"
@@ -200,7 +200,7 @@ services:
     restart: unless-stopped
     environment:
       TEMPORAL_ADDRESS: temporal:7233
-      TEMPORAL_CORS_ORIGINS: "${POSTIZ_URL:-https://postiz.con.fyi}"
+      TEMPORAL_CORS_ORIGINS: "${POSTIZ_URL:-https://post.con.fyi}"
     depends_on:
       temporal:
         condition: service_healthy

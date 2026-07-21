@@ -16,11 +16,11 @@ Copy [`.env.example`](.env.example) into Coolify's environment-variable editor. 
 
 ## Only public endpoint
 
-Create an A record for `postiz.con.fyi` pointing to the Coolify server. Configure only this domain:
+Create an A record for `post.con.fyi` pointing to the Coolify server. Configure only this domain:
 
 | Service | Coolify domain value | Public URL |
 | --- | --- | --- |
-| `postiz` | `https://postiz.con.fyi:5000` | `https://postiz.con.fyi` |
+| `postiz` | `https://post.con.fyi:5000` | `https://post.con.fyi` |
 
 Leave PostgreSQL, Redis, Temporal, Elasticsearch, Spotlight, Temporal UI, and Temporal admin tools without domains. The Compose file publishes no host ports and defines no custom network; Coolify's proxy is the only public entry point on ports 80 and 443.
 
