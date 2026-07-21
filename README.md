@@ -36,6 +36,8 @@ Create an A record for `post.con.fyi` pointing to the Coolify server. Configure 
 
 Leave PostgreSQL, Redis, Temporal, Elasticsearch, Spotlight, Temporal UI, and Temporal admin tools without domains. The Compose file publishes no host ports and defines no custom network; Coolify's proxy is the only public entry point on ports 80 and 443.
 
+The production Temporal service uses the dynamic configuration bundled in its image. Do not add a repository-relative dynamic-config bind mount here: Coolify can materialize that mount as an empty directory and hide the bundled configuration, causing Temporal to crash-loop.
+
 ## First deployment
 
 1. Set all required environment variables.
